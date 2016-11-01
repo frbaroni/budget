@@ -1,6 +1,12 @@
 defmodule Budget do
   use Application
 
+  alias Budget.Endpoint
+
+  @moduledoc """
+   See http://elixir-lang.org/docs/stable/elixir/Application.html
+  """
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -11,8 +17,9 @@ defmodule Budget do
       # Start the Ecto repository
       supervisor(Budget.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Budget.Endpoint, []),
-      # Start your own worker by calling: Budget.Worker.start_link(arg1, arg2, arg3)
+      supervisor(Endpoint, []),
+      # Start your own worker by calling:
+      # Budget.Worker.start_link(arg1, arg2, arg3)
       # worker(Budget.Worker, [arg1, arg2, arg3]),
     ]
 
@@ -25,7 +32,7 @@ defmodule Budget do
   # Tell Phoenix to update the endpoint configuration
   # whenever the application is updated.
   def config_change(changed, _new, removed) do
-    Budget.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 end
