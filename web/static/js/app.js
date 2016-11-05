@@ -19,3 +19,15 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+//
+
+// Initialize Vue
+import Vue from "vue";
+import VueResource from "vue-resource";
+Vue.use(VueResource);
+
+const environment = process.env.NODE_ENV;
+const development_environment = 'development';
+Vue.config.debug = (environment === development_environment);
+Vue.config.devtools = (environment === development_environment);
+
