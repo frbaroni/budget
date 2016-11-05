@@ -1,6 +1,9 @@
 defmodule Budget.AuthController do
   use Budget.Web, :controller
 
+  import Budget.Router.Helpers
+  alias Budget.Endpoint
+
   @auth_code_length 32
   @auth_session_length 12
 
@@ -16,11 +19,12 @@ defmodule Budget.AuthController do
   """
   def create(conn, %{"email" => email}) do
     session_code = SecureRandom.hex(@auth_session_length)
-    auth_code = "session:" <> session_code <> ";code:" <> SecureRandom.hex(@auth_code_length)
+    auth_code = SecureRandom.hex(@auth_code_length)
+    url = auth_url(Endpoint, :show, session_code, [code: auth_code])
     json conn, %{
       session: session_code,
       email: email,
-      dbg_auth_code: auth_code
+      dbg_url: url
     }
   end
 
