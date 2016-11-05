@@ -31,3 +31,6 @@ const development_environment = 'development';
 Vue.config.debug = (environment === development_environment);
 Vue.config.devtools = (environment === development_environment);
 
+// Initialize our application modules
+import "./auth"
+

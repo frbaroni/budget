@@ -17,10 +17,13 @@ defmodule Budget.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+
+    resources "/auth", AuthController, only: [:index]
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Budget do
-  #   pipe_through :api
-  # end
+  scope "/api", Budget do
+     pipe_through :api
+     resources "/auth", AuthController, only: [:create, :show, :delete]
+  end
 end
