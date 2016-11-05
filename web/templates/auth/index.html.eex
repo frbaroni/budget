@@ -3,7 +3,7 @@
     <h4>Authentication</h4>
     <form id="auth-form">
       <input type="email" placeholder="Email" v-model="email">
-      <input type="submit" value="Send me login link" @click="authenticate">
+      <input type="submit" value="Send me login link" @click.prevent="authenticate">
     </form>
   </div>
 </div>
