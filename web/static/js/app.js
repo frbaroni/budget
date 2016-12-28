@@ -21,16 +21,6 @@ import "phoenix_html"
 // import socket from "./socket"
 //
 
-// Initialize Vue
-import Vue from "vue";
-import VueResource from "vue-resource";
-Vue.use(VueResource);
-
-const environment = process.env.NODE_ENV;
-const development_environment = 'development';
-Vue.config.debug = (environment === development_environment);
-Vue.config.devtools = (environment === development_environment);
-
 // Initialize our application modules
 //import "./auth"
-
+//

@@ -1,3 +1,172 @@
 <div class="jumbotron">
-  <p><%= gettext "Welcome to %{name}", name: "Phoenix!" %></p>
-</div>
+  <p><%= gettext "Budget with %{name}", name: "Phoenix!" %></p>
+  <div class="panel panel-default">
+    <div class="panel-heading">Transactions</div>
+    <table class="table" id="register">
+      <tr>
+        <th class="col-md-1">
+          <i class="fa fa-lg fa-check-circle"
+             data-toggle="tooltip"
+             title="Consolidated">
+          </i>
+          <i class="fa fa-lg fa-tags"
+             data-toggle="tooltip"
+             title="Tags">
+          </i>
+        </th>
+        <th class="col-md-1">
+          Date
+        </th>
+        <th class="col-md-3">
+          Payee
+        </th>
+        <th class="col-md-5">
+          Notes
+        </th>
+        <th class="col-md-1">
+          Balance
+        </th>
+      </tr>
+      <tr v-for="transaction in transactions">
+        <td style="vertical-align: middle">
+            <i class="fa fa-lg fa-check-circle text-success" 
+               data-toggle="tooltip"
+               :class="transaction.consolidated ?
+                        'text-success' : 'text-danger'"
+               :title="transaction.consolidated ?
+                        'Consolidated' : 'Not consolidated'">
+            </i>
+            <i v-for="tag in transaction.tags" class="fa fa-lg fa-tag" 
+               data-toggle="tooltip"
+               :style="{color: tag.color}"
+               :title="tag.name">
+            </i>
+        </td>
+        <td style="vertical-align: middle">
+          <span class="text-nowrap">{{ transaction.date }}</span>
+        </td>
+        <td class="text-info text-nowrap">
+          <small>
+            <span v-for="category in transaction.category">
+              {{ category }}
+              <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </span>
+          </small><br/>
+          {{ transaction.payee }}
+        </td>
+        <td style="vertical-align: middle">
+          {{ transaction.notes }}
+        </td>
+        <td>
+          <span class="label col-md-12"
+            data-toggle="tooltip"
+            :title="transaction.value"
+            :class="transaction.value >= 0.0 ?
+                      'label-success' : 'label-danger'">
+            {{ transaction.value }}
+          </span>
+          <br/>
+          <span class="label col-md-12"
+            data-toggle="tooltip"
+            :title="transaction.balance"
+            :class="transaction.balance >= 0.0 ?
+                      'label-success' : 'label-danger'">
+            {{ transaction.balance }}
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <div class="form-group form-inline">
+            <input type="date" class="form-control input-md-2"
+              placeholder="Date"
+              v-model="inserting.date"/>
+            <input type="text" class="form-control input-md-4"
+              placeholder="Payee"
+              v-model="inserting.payee"/>
+            <input type="text" class="form-control"
+              placeholder="Notes"
+              v-model="inserting.notes"/>
+            <input type="number" step="0.01" class="form-control"
+              placeholder="Amount"
+              v-model="inserting.amount"/>
+            <button @click.prevent="addTransaction">Add</button>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+<script>
+new Vue({
+  el: '#register',
+  methods: {
+    addTransaction: function() { 
+      debugger;
+      var ins = this.inserting;
+      var transaction = {
+        date: ins.date,
+        consolidated: false,
+        category: [],
+        payee: ins.payee,
+        tags: [],
+        notes: ins.notes,
+        value: ins.amount,
+        balance: 0
+      };
+      this.transactions.push(transaction);
+    }
+  },
+  data: {
+    inserting: {
+      date: '2016-05-20',
+      payee: '',
+      notes: '',
+      amount: 0
+    },
+    transactions: [
+      {
+        date: '2016-05-21',
+        consolidated: true,
+        category: ['House', 'Rent'],
+        payee: 'Happy Real State',
+        tags: [
+          {name: 'Tax', color: '#31708f'}
+        ],
+        notes: '',
+        value: -840.22,
+        balance: +11713.21
+      }, {
+        date: '2016-05-23',
+        consolidated: true,
+        category: ['Entertainment', 'Games'],
+        payee: 'Gaming Fun Store',
+        tags: [
+          {name: 'Tax', color: '#31708f'},
+          {name: 'Fun', color: '#3c763d'}
+        ],
+        notes: 'Wii-U Game: Splatoon',
+        value: -223.50,
+        balance: +11489.71
+      }, {
+        date: '2016-05-30',
+        consolidated: true,
+        category: ['Income', 'Salary'],
+        payee: 'Lovely Company',
+        tags: [],
+        notes: '',
+        value: +8692.77,
+        balance: +20182.48
+      }, {
+        date: '2016-06-01',
+        consolidated: false,
+        category: ['Montly  Expenses', 'Groceries'],
+        payee: 'Temple Market',
+        tags: [],
+        notes: '',
+        value: -581.63,
+        balance: +19600.85
+      }
+    ]
+  }
+});
+</script>
